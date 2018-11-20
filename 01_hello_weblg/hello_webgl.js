@@ -35,4 +35,3 @@ if (!!window.WebGLRenderingContext === true) {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);  // clear viewport with black
     } else { console.log('Your browser does not support WebGL'); }
 } else { console.log('WebGL is supported, but disabled :-('); }
-
