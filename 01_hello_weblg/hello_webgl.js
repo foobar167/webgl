@@ -1,5 +1,5 @@
+// This is a simplest WebGL program, which draw yellow square on the gray background.
 const canvas = document.getElementById('webgl');
-
 let gl = null;  // WebGL rendering context
 window.onload = initializeWebGL;  // init WebGL when DOM is ready
 
