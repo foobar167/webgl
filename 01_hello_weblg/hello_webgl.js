@@ -119,10 +119,6 @@ function initBuffers() {
 
 // Draw the scene.
 function drawScene() {
-    canvas.width  = window.innerWidth;  // set canvas width and height
-    canvas.height = window.innerHeight;
-    gl.viewportWidth = canvas.width;    // ensure OpenGL viewport is resized to match canvas
-    gl.viewportHeight = canvas.height;
     gl.clearColor(0.2, 0.2, 0.2, 1.0);  // set screen clear color to gray, fully opaque
     gl.clearDepth(1.0);                 // clear everything
     gl.enable(gl.DEPTH_TEST);           // enable depth testing
