@@ -1,9 +1,7 @@
 const canvas = document.getElementById('webgl');
 
 let gl = null;  // WebGL rendering context
-
 window.onload = initializeWebGL;  // init WebGL when DOM is ready
-window.addEventListener('resize', drawScene);  // redraw when the window is resized
 
 function initializeWebGL() {
     if (!window.WebGLRenderingContext) {
