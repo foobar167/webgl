@@ -15,6 +15,10 @@ function initializeWebGL() {
         return;
     }
 
+    console.log('WebGL is initialized.');
+    console.log(gl);  // output the WebGL rendering context object to console for reference
+    console.log(gl.getSupportedExtensions());  // print list of supported extensions
+
     // Vertex shader program
     const vertexSource = `
         attribute vec4 aVertexPosition;
@@ -60,7 +64,18 @@ function initializeWebGL() {
 
     // Call the routine that builds all the drawing objects.
     buffers = initBuffers();
-    const texture = loadTexture('textures/doge5.jpg');
+    const urls = ['textures/doges.png'];
+    /*
+    const urls = [
+        'textures/doge1.jpg',
+        'textures/doge2.jpg',
+        'textures/doge3.jpg',
+        'textures/doge4.jpg',
+        'textures/doge5.jpg',
+        'textures/doge6.png',
+    ];
+    */
+    const texture = loadTexture(urls);
 
     // Draw the scene repeatedly
     let then = 0;
@@ -75,10 +90,6 @@ function initializeWebGL() {
         requestAnimationFrame(render);
     }
     requestAnimationFrame(render);
-
-    console.log('WebGL is initialized.');
-    console.log(gl);  // output the WebGL rendering context object to console for reference
-    console.log(gl.getSupportedExtensions());  // print list of supported extensions
 }
 
 // Get WebGL context, if standard is not available, then try on different alternatives
@@ -169,36 +180,36 @@ function initBuffers() {
     gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
 
     const textureCoordinates = [
-        // Front
-        0.0,  0.0,
-        1.0,  0.0,
-        1.0,  1.0,
-        0.0,  1.0,
-        // Back
-        0.0,  0.0,
-        1.0,  0.0,
-        1.0,  1.0,
-        0.0,  1.0,
-        // Top
-        0.0,  0.0,
-        1.0,  0.0,
-        1.0,  1.0,
-        0.0,  1.0,
-        // Bottom
-        0.0,  0.0,
-        1.0,  0.0,
-        1.0,  1.0,
-        0.0,  1.0,
-        // Right
-        0.0,  0.0,
-        1.0,  0.0,
-        1.0,  1.0,
-        0.0,  1.0,
-        // Left
-        0.0,  0.0,
-        1.0,  0.0,
-        1.0,  1.0,
-        0.0,  1.0,
+        // select the bottom left image
+        0   , 0  ,
+        0   , 0.5,
+        0.25, 0.5,
+        0.25, 0  ,
+        // select the bottom middle image
+        0.25, 0  ,
+        0.5 , 0  ,
+        0.5 , 0.5,
+        0.25, 0.5,
+        // select to bottom right image
+        0.5 , 0  ,
+        0.5 , 0.5,
+        0.75, 0.5,
+        0.75, 0  ,
+        // select the top left image
+        0   , 0.5,
+        0.25, 0.5,
+        0.25, 1  ,
+        0   , 1  ,
+        // select the top middle image
+        0.25, 0.5,
+        0.25, 1  ,
+        0.5 , 1  ,
+        0.5 , 0.5,
+        // select the top right image
+        0.5 , 0.5,
+        0.75, 0.5,
+        0.75, 1  ,
+        0.5 , 1  ,
     ];
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates), gl.STATIC_DRAW);
@@ -230,9 +241,8 @@ function initBuffers() {
 }
 
 // Init a texture and load and image. When the image finished loading copy it into the texture.
-function loadTexture(url) {
+function loadTexture(urls) {
     const texture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, texture);
 
     // Because images have to be downloaded over the internet they might take a moment until
     // they are ready. Until then put a single pixel in the texture so we can use it immediately.
@@ -245,27 +255,57 @@ function loadTexture(url) {
     const srcFormat = gl.RGBA;
     const srcType = gl.UNSIGNED_BYTE;
     const pixel = new Uint8Array([0, 0, 255, 255]);  // opaque blue
+    gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height,
                   border, srcFormat, srcType, pixel);
 
-    const image = new Image();
-    image.onload = function() {
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
+    // If URL list has only one image for each cube face.
+    if (urls.length === 1) {
+        const image = new Image();
+        image.onload = function() {
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
 
-        // WebGL1 has different requirements for power of 2 images vs non power of 2 images
-        // so check if the image is a power of 2 in both dimensions.
-        if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-            // Yes, it's a power of 2. Generate mips.
-            gl.generateMipmap(gl.TEXTURE_2D);
-        } else {
-            // No, it's not a power of 2. Turn of mips and set wrapping to clamp to edge.
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            // WebGL1 has different requirements for power of 2 images vs non power of 2 images
+            // so check if the image is a power of 2 in both dimensions.
+            if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+                // Yes, it's a power of 2. Generate mips.
+                gl.generateMipmap(gl.TEXTURE_2D);
+            } else {
+                // No, it's not a power of 2. Turn of mips and set wrapping to clamp to edge.
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            }
+        };
+        image.src = urls[0];
+    }
+
+    // If URL list has 6 images: one image per cube's face.
+    if(urls.length === 6) {
+        // Create canvas
+        const ctx = document.createElement('canvas').getContext('2d');
+        const size = 256;  // 256 pixels per square image
+        ctx.canvas.width = size * 4;
+        ctx.canvas.height = size * 2;
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);  // fill with black
+        // Add face to canvas
+        for(const i in urls) {
+            const image = new Image();
+            image.onload = function() {
+                const x = i % 3;
+                const y = i / 3 | 0;
+                ctx.drawImage(image, 0, 0, image.width, image.height, x * size, y * size, size, size);
+                // Upload canvas to texture.
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, ctx.canvas);
+                gl.generateMipmap(gl.TEXTURE_2D);
+            };
+            image.crossOrigin = '';
+            //noinspection JSUnfilteredForInLoop
+            image.src = urls[i];
         }
-    };
-    image.src = url;
+    }
 
     return texture;
 }
