@@ -317,6 +317,8 @@ function isPowerOf2(value) {
 
 // Draw the scene.
 function drawScene(programInfo, buffers, rotation, texture) {
+    resize(gl.canvas);
+
     gl.clearColor(0.2, 0.2, 0.2, 1.0);  // set screen clear color to gray, fully opaque
     gl.clearDepth(1.0);                 // clear everything
     gl.enable(gl.DEPTH_TEST);           // enable depth testing
@@ -426,5 +428,25 @@ function drawScene(programInfo, buffers, rotation, texture) {
         const type = gl.UNSIGNED_SHORT;
         const offset = 0;
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+    }
+}
+
+// Resize canvas if window is changed.
+function resize(cnv) {
+    // Lookup the size the browser is displaying the canvas.
+    const displayWidth  = cnv.clientWidth;
+    const displayHeight = cnv.clientHeight;
+
+    // Check if the canvas is not the same size.
+    if (cnv.width  !== displayWidth ||
+        cnv.height !== displayHeight) {
+
+        // Make the canvas the same size
+        cnv.width  = displayWidth;
+        cnv.height = displayHeight;
+
+        // First time WebGL set the viewport to match the size of the canvas,
+        // but after that it's up to you to set it.
+        gl.viewport(0, 0, cnv.width, cnv.height);
     }
 }
