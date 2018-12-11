@@ -2,6 +2,7 @@
 const canvas = document.getElementById('webgl');
 let gl = null;  // WebGL rendering context
 window.onload = initializeWebGL;  // init WebGL when DOM is ready
+window.addEventListener('resize', drawScene);  // redraw when the window is resized
 
 function initializeWebGL() {
     if (!window.WebGLRenderingContext) {
@@ -14,6 +15,10 @@ function initializeWebGL() {
         console.log('Your browser does not support WebGL.');
         return;
     }
+
+    console.log('WebGL is initialized.');
+    console.log(gl);  // output the WebGL rendering context object to console for reference
+    console.log(gl.getSupportedExtensions());  // print list of supported extensions
 
     // Vertex shader program
     const vertexSource = `
@@ -46,7 +51,7 @@ function initializeWebGL() {
         },
         uniformLocations: {
             projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
-            modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+            modelViewMatrix:  gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
         },
     };
 
@@ -54,10 +59,6 @@ function initializeWebGL() {
     gl._buffers = initBuffers();
 
     drawScene();  // draw the scene
-
-    console.log('WebGL is initialized.');
-    console.log(gl);  // output the WebGL rendering context object to console for reference
-    console.log(gl.getSupportedExtensions());  // print list of supported extensions
 }
 
 // Get WebGL context, if standard is not available, then try on different alternatives
@@ -117,6 +118,8 @@ function initBuffers() {
 
 // Draw the scene.
 function drawScene() {
+    resize(gl.canvas);  // resize canvas if necessary
+
     gl.clearColor(0.2, 0.2, 0.2, 1.0);  // set screen clear color to gray, fully opaque
     gl.clearDepth(1.0);                 // clear everything
     gl.enable(gl.DEPTH_TEST);           // enable depth testing
@@ -179,5 +182,25 @@ function drawScene() {
         const offset = 0;
         const vertexCount = 4;
         gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+    }
+}
+
+// Resize canvas if window is changed.
+function resize(cnv) {
+    // Lookup the size the browser is displaying the canvas.
+    const displayWidth  = cnv.clientWidth;
+    const displayHeight = cnv.clientHeight;
+
+    // Check if the canvas is not the same size.
+    if (cnv.width  !== displayWidth ||
+        cnv.height !== displayHeight) {
+
+        // Make the canvas the same size
+        cnv.width  = displayWidth;
+        cnv.height = displayHeight;
+
+        // First time WebGL set the viewport to match the size of the canvas,
+        // but after that it's up to you to set it.
+        gl.viewport(0, 0, cnv.width, cnv.height);
     }
 }
