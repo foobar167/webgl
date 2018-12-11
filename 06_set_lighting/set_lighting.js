@@ -1,4 +1,4 @@
-// Rraw 3D cube on the gray background and apply rotation to it.
+// Set lighting to 3D cube.
 const canvas = document.getElementById('webgl');
 let gl = null;  // WebGL rendering context
 window.onload = initializeWebGL;  // init WebGL when DOM is ready
@@ -64,18 +64,7 @@ function initializeWebGL() {
 
     // Call the routine that builds all the drawing objects.
     buffers = initBuffers();
-    const urls = ['textures/doges.png'];
-    /*
-    const urls = [
-        'textures/doge1.jpg',
-        'textures/doge2.jpg',
-        'textures/doge3.jpg',
-        'textures/doge4.jpg',
-        'textures/doge5.jpg',
-        'textures/doge6.png',
-    ];
-    */
-    const texture = loadTexture(urls);
+    const texture = loadTexture(['textures/doges.png']);
 
     // Draw the scene repeatedly
     let then = 0;
@@ -278,6 +267,7 @@ function loadTexture(urls) {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
             }
         };
+        //image.crossOrigin = 'anonymous';  // cross-origin elements require CORS
         image.src = urls[0];
     }
 
