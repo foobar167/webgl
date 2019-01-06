@@ -11,10 +11,10 @@ This repository is based on 2 open source tutorials for beginners:
 2. [WebGL Fundamentals](https://webglfundamentals.org/)
 from the ground up. No magic.
 
-The code is divided into separate independent steps and steadily increases
+Code is divided into separate independent steps and steadily increases
 complexity with each step.
 
-The following technologies are used:
+Following technologies are used:
 1. Javascript programming language;
 2. basics of HTML and CSS necessary to start examples;
 3. [glMatrix](http://glmatrix.net/) high performance vector and matrix
