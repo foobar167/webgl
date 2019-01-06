@@ -1,4 +1,4 @@
-// Rraw 3D cube on the gray background and apply rotation to it.
+// Using texture for a 3D cube.
 const canvas = document.getElementById('webgl');
 let gl = null;  // WebGL rendering context
 window.onload = initializeWebGL;  // init WebGL when DOM is ready
