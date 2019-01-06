@@ -11,8 +11,6 @@ This repository is based on 2 open source tutorials for beginners:
 2. [WebGL Fundamentals](https://webglfundamentals.org/)
 from the ground up. No magic.
 
-I hope that in the future I'll use more tutorials here.
-
 The code is divided into separate independent steps and steadily increases
 complexity with each step.
 
