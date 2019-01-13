@@ -1,7 +1,7 @@
-### Step 6. Set lighting
+### Step 7. Create video cube
 
-Setting the lighting for the cube to make it look more realistic.
-Lighting is added using 77 lines of code.
-There are 530 Javascript lines for now.
+Create ```<video>``` element to retrieve frames for texture.
 
-![Set lighting](../data/2019.01.06-step06-set-lighting.png)
+Replace static textures with the frames of an MP4 video file that's playing.
+
+![Video cute](../data/2019.01.13-step07-video-cube.png)
