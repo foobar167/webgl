@@ -1,4 +1,4 @@
-// Set lighting to 3D cube.
+// Set video to 3D cube.
 const canvas = document.getElementById('webgl');
 let gl = null;  // WebGL rendering context
 let copy_video = false;  // set to true when video can be copied to texture
