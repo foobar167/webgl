@@ -84,6 +84,14 @@ There are 530 Javascript lines for now.
 
 [Run the cube in your browser](https://foobar167.github.io/page/webgl-cube/cube.html)
 
+### Step 7. Create video cube
+
+Create ```<video>``` element to retrieve frames for texture.
+
+Replace static texture with frames from an MP4 video file that's playing.
+
+![Video cute](data/2019.01.13-step07-video-cube.png)
+
 <br/><br/>
 
 **I'll make further development of WebGL steps soon.
