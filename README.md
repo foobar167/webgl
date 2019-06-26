@@ -82,6 +82,8 @@ There are 530 Javascript lines for now.
 
 ![Set lighting](data/2019.01.06-step06-set-lighting.png)
 
+[Run the cube in your browser](https://foobar167.github.io/page/webgl-cube/cube.html)
+
 <br/><br/>
 
 **I'll make further development of WebGL steps soon.
